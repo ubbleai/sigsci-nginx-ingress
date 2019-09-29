@@ -2,8 +2,8 @@ controller:
 
     # Replaces the default nginx-controller image with a custom image that contains the Signal Sciences nginx Module
     image:
-      repository: myregistry/sigsci-module-nginx-ingress
-      tag: "0.18.0"
+      repository: ubbleai/nginx-ingress-controller
+      tag: "0.25.1"
       pullPolicy: IfNotPresent
 
     # Loads a custom nginx template with the Signal Sciences Lua directives included 
@@ -14,7 +14,7 @@ controller:
     # Loads sidecar container image that houses the Signal Sciences Agent
     extraContainers:
       - name: sigsci-agent
-        image: myregistry/sigsci-agent:latest
+        image: ubbleai/sigsci-agent:4.0.0
         imagepullPolicy: IfNotPresent
         volumeMounts:
         - name: sigsci-socket
@@ -23,9 +23,9 @@ controller:
         # Sets Signal Sciences Agent keys
         env:
         - name: SIGSCI_ACCESSKEYID
-          value: SETME
+          value: ${sigsci_accesskeyid}
         - name: SIGSCI_SECRETACCESSKEY
-          value: SETME
+          value: ${sigsci_secretaccesskey}
 
     # Mounts shared volume for sigsci.sock file
     extraVolumeMounts:
